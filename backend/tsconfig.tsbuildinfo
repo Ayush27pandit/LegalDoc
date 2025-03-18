@@ -1,0 +1,1 @@
+{"root":["./src/db.ts","./src/index.ts","./src/controllers/summarizecontroller.ts","./src/models/summary.ts","./src/routes/summarizeroutes.ts"],"version":"5.8.2"}
