@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import axios from "axios";
 import pdfParse from "pdf-parse";
 import dotenv from "dotenv";
+import { Summary } from "../models/Summary";
 dotenv.config();
 
 export const summarizeDocument = async (
@@ -56,10 +57,16 @@ export const summarizeDocument = async (
       geminiResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
     const cleanedResponse = responseText.replace(/^```json|```$/g, "").trim();
 
-    console.log("Cleaned AI Response:", cleanedResponse);
     try {
       const { summary, insights } = JSON.parse(cleanedResponse);
+
       res.status(200).json({ summary, insights });
+      await Summary.create({
+        filename: file.name,
+        text: extractedText,
+        summary,
+        insights,
+      });
     } catch (jsonError) {
       console.error("Error parsing Gemini response:", jsonError);
       res.status(500).json({ message: "Error processing AI response" });

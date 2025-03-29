@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const SummarySchema = new mongoose.Schema({
-  filename: { type: String, unique: true },
-  text: { type: String },
+  filename: { type: String },
+  fieId: { type: String, unique: true },
   summary: { type: String },
+  insights: [{ type: String }],
   createdAt: { type: Date, default: Date.now },
 });
 
